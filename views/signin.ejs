@@ -5,6 +5,7 @@
             <form
                action="/signin"
                method="post"
+               id="sign-in-form"
                class="needs-validation"
                novalidate
             >
@@ -77,5 +78,35 @@
             false
          );
       })();
+      const signIn = document.getElementById("sign-in-form");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+      const loginButton = signIn.querySelector('button[type="submit"]');
+
+      const handleSignIn = async (email, password) => {
+         const r = await fetch("/signin", {
+            method: "POST",
+            headers: {
+               Accept: "application/json",
+               "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+               email,
+               password,
+            }),
+         });
+
+         const data = await r.json();
+         console.log(data);
+      };
+
+      signIn.onsubmit = (event) => {
+         event.preventDefault();
+         loginButton.disable = true;
+         if (signIn.checkValidity()) {
+            handleSignIn(email.value, password.value);
+         }
+         loginButton.disable = false;
+      };
    </script>
 </section>

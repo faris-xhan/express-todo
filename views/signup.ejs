@@ -2,9 +2,14 @@
    <div class="container">
       <div class="row">
          <div class="col-lg-6 d-flex flex-column justify-content-center">
-            <form class="needs-validation" novalidate method="POST">
+            <form
+               class="needs-validation"
+               novalidate
+               method="POST"
+               id="signup-form"
+            >
                <div class="form-row">
-                  <div class="col-md-4 mb-3">
+                  <div class="col-md-4 mb-2">
                      <label for="first-name">First name</label>
                      <input
                         type="text"
@@ -16,7 +21,7 @@
                      />
                      <div class="valid-feedback">Looks good!</div>
                   </div>
-                  <div class="col-md-4 mb-3">
+                  <div class="col-md-4 mb-2">
                      <label for="last-name">Last name</label>
                      <input
                         type="text"
@@ -28,7 +33,7 @@
                      />
                      <div class="valid-feedback">Looks good!</div>
                   </div>
-                  <div class="col-md-4 mb-3">
+                  <div class="col-md-4 mb-2">
                      <label for="username">Username</label>
                      <div class="input-group">
                         <div class="input-group-prepend">
@@ -44,14 +49,11 @@
                            aria-describedby="inputGroupPrepend"
                            required
                         />
-                        <div class="invalid-feedback">
-                           Please choose a username.
-                        </div>
                      </div>
                   </div>
                </div>
                <div class="form-row">
-                  <div class="col-md-6 mb-3">
+                  <div class="col-md-6 mb-2">
                      <label for="email">Email</label>
                      <input
                         type="text"
@@ -61,11 +63,8 @@
                         name="email"
                         required
                      />
-                     <div class="invalid-feedback">
-                        Please provide a valid email.
-                     </div>
                   </div>
-                  <div class="col-md-6 mb-3">
+                  <div class="col-md-6 mb-2">
                      <label for="password">Password</label>
                      <input
                         type="password"
@@ -75,47 +74,14 @@
                         name="password"
                         required
                      />
-                     <div class="invalid-feedback">
+                     <small class="invalid-feedback">
                         You're password must be atleast 8 character long.
-                     </div>
+                     </small>
                   </div>
                </div>
 
                <button class="btn btn-primary" type="submit">Sign Up</button>
             </form>
-
-            <script>
-               // Example starter JavaScript for disabling form submissions if there are invalid fields
-               (function () {
-                  "use strict";
-                  window.addEventListener(
-                     "load",
-                     function () {
-                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                        var forms =
-                           document.getElementsByClassName("needs-validation");
-                        // Loop over them and prevent submission
-                        var validation = Array.prototype.filter.call(
-                           forms,
-                           function (form) {
-                              form.addEventListener(
-                                 "submit",
-                                 function (event) {
-                                    if (form.checkValidity() === false) {
-                                       event.preventDefault();
-                                       event.stopPropagation();
-                                    }
-                                    form.classList.add("was-validated");
-                                 },
-                                 false
-                              );
-                           }
-                        );
-                     },
-                     false
-                  );
-               })();
-            </script>
          </div>
          <div
             class="col-lg-6 hero-img"
@@ -126,4 +92,71 @@
          </div>
       </div>
    </div>
+   <script>
+      // Example starter JavaScript for disabling form submissions if there are invalid fields
+      (function () {
+         "use strict";
+         window.addEventListener(
+            "load",
+            function () {
+               // Fetch all the forms we want to apply custom Bootstrap validation styles to
+               var forms = document.getElementsByClassName("needs-validation");
+               // Loop over them and prevent submission
+               var validation = Array.prototype.filter.call(
+                  forms,
+                  function (form) {
+                     form.addEventListener(
+                        "submit",
+                        function (event) {
+                           if (form.checkValidity() === false) {
+                              event.preventDefault();
+                              event.stopPropagation();
+                           }
+                           form.classList.add("was-validated");
+                        },
+                        false
+                     );
+                  }
+               );
+            },
+            false
+         );
+      })();
+      const signup = document.getElementById("signup-form");
+      const fname = document.getElementById("first-name");
+      const lname = document.getElementById("last-name");
+      const username = document.getElementById("username");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+      const signUpButton = signup.querySelector('button[type="submit"]');
+
+      const handleSignIn = async (formData) => {
+         const r = await fetch("/signup", {
+            method: "POST",
+            headers: {
+               Accept: "application/json",
+               "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+         });
+
+         const data = await r.json();
+         console.log(data);
+      };
+
+      signup.onsubmit = (event) => {
+         event.preventDefault();
+         signUpButton.disable = true;
+         if (signup.checkValidity()) {
+            handleSignIn({
+               fname: fname.value,
+               lname: lname.value,
+               username: username.value,
+               email: email.value,
+               password: password.value,
+            });
+         }
+         signUpButton.disable = false;
+      };
+   </script>
 </section>

@@ -8,8 +8,16 @@
                method="POST"
                id="signup-form"
             >
+               <div
+                  class="alert alert-danger"
+                  role="alert"
+                  id="incorrect-alert"
+                  hidden
+               >
+                  Please provide correct information.
+               </div>
                <div class="form-row">
-                  <div class="col-md-4 mb-2">
+                  <div class="col-md-6 mb-2">
                      <label for="first-name">First name</label>
                      <input
                         type="text"
@@ -21,7 +29,7 @@
                      />
                      <div class="valid-feedback">Looks good!</div>
                   </div>
-                  <div class="col-md-4 mb-2">
+                  <div class="col-md-6 mb-2">
                      <label for="last-name">Last name</label>
                      <input
                         type="text"
@@ -33,36 +41,22 @@
                      />
                      <div class="valid-feedback">Looks good!</div>
                   </div>
-                  <div class="col-md-4 mb-2">
-                     <label for="username">Username</label>
-                     <div class="input-group">
-                        <div class="input-group-prepend">
-                           <span class="input-group-text" id="inputGroupPrepend"
-                              >@</span
-                           >
-                        </div>
-                        <input
-                           type="text"
-                           class="form-control"
-                           id="username"
-                           placeholder="Username"
-                           aria-describedby="inputGroupPrepend"
-                           required
-                        />
-                     </div>
-                  </div>
                </div>
                <div class="form-row">
                   <div class="col-md-6 mb-2">
                      <label for="email">Email</label>
                      <input
-                        type="text"
+                        type="email"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                         class="form-control"
                         id="email"
                         placeholder="Email"
                         name="email"
                         required
                      />
+                     <small class="invalid-feedback">
+                        Please provie a valid email address.
+                     </small>
                   </div>
                   <div class="col-md-6 mb-2">
                      <label for="password">Password</label>
@@ -70,12 +64,13 @@
                         type="password"
                         class="form-control"
                         id="password"
+                        minlength="8"
                         placeholder="Password"
                         name="password"
                         required
                      />
                      <small class="invalid-feedback">
-                        You're password must be atleast 8 character long.
+                        Password must be atleast 8 character long.
                      </small>
                   </div>
                </div>
@@ -125,7 +120,6 @@
       const signup = document.getElementById("signup-form");
       const fname = document.getElementById("first-name");
       const lname = document.getElementById("last-name");
-      const username = document.getElementById("username");
       const email = document.getElementById("email");
       const password = document.getElementById("password");
       const signUpButton = signup.querySelector('button[type="submit"]');
@@ -140,23 +134,27 @@
             body: JSON.stringify(formData),
          });
 
-         const data = await r.json();
-         console.log(data);
+         if (r.ok) {
+            const data = await r.json();
+            console.log(data);
+         } else {
+            const incorrectAlert = document.getElementById("incorrect-alert");
+            incorrectAlert.hidden = false;
+         }
       };
 
       signup.onsubmit = (event) => {
          event.preventDefault();
-         signUpButton.disable = true;
+         signUpButton.disabled = true;
          if (signup.checkValidity()) {
             handleSignIn({
                fname: fname.value,
                lname: lname.value,
-               username: username.value,
                email: email.value,
                password: password.value,
             });
          }
-         signUpButton.disable = false;
+         signUpButton.disabled = false;
       };
    </script>
 </section>

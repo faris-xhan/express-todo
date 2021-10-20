@@ -2,6 +2,14 @@
    <div class="container">
       <div class="row">
          <div class="col-lg-6 d-flex flex-column justify-content-center">
+            <div
+               class="alert alert-danger"
+               role="alert"
+               id="incorrect-alert"
+               hidden
+            >
+               You're email or password is incorrect.
+            </div>
             <form
                action="/signin"
                method="post"
@@ -12,10 +20,10 @@
                <div class="form-group">
                   <label for="email">Email address</label>
                   <input
-                     type="email"
                      name="email"
                      class="form-control"
                      id="email"
+                     pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                      aria-describedby="emailHelp"
                      placeholder="Enter email"
                      required
@@ -36,7 +44,7 @@
                   />
                </div>
 
-               <button type="submit" class="btn btn-primary">Submit</button>
+               <button type="submit" class="btn btn-primary">Log in</button>
             </form>
          </div>
          <div
@@ -82,7 +90,6 @@
       const email = document.getElementById("email");
       const password = document.getElementById("password");
       const loginButton = signIn.querySelector('button[type="submit"]');
-
       const handleSignIn = async (email, password) => {
          const r = await fetch("/signin", {
             method: "POST",
@@ -95,18 +102,22 @@
                password,
             }),
          });
-
-         const data = await r.json();
-         console.log(data);
+         if (r.ok) {
+            const data = await r.json();
+            console.log(data);
+         } else {
+            const incorrectAlert = document.getElementById("incorrect-alert");
+            incorrectAlert.hidden = false;
+         }
       };
 
       signIn.onsubmit = (event) => {
          event.preventDefault();
-         loginButton.disable = true;
+         loginButton.disabled = true;
          if (signIn.checkValidity()) {
             handleSignIn(email.value, password.value);
          }
-         loginButton.disable = false;
+         loginButton.disabled = false;
       };
    </script>
 </section>

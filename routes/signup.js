@@ -9,9 +9,9 @@ router.get("/", (req, res, next) => {
 
 router.post(
    "/",
-   body("fname").notEmpty().isLength({ min: 2 }),
-   body("lname").notEmpty().isLength({ min: 2 }),
-   body("email").notEmpty().isEmail().normalizeEmail(),
+   body("fname").notEmpty().isLength({ min: 2 }).trim(),
+   body("lname").notEmpty().isLength({ min: 2 }).trim(),
+   body("email").notEmpty().isEmail().normalizeEmail().trim(),
    body("password").notEmpty().isLength({ min: 8 }),
    (req, res, next) => {
       const errors = validationResult(req);

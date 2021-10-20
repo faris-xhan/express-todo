@@ -11,7 +11,7 @@ router.get("/", (req, res, next) => {
 
 router.post(
    "/",
-   body("email").notEmpty().isEmail().normalizeEmail(),
+   body("email").notEmpty().isEmail().normalizeEmail().trim(),
    body("password")
       .notEmpty()
       .isLength({ min: 8 })

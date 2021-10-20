@@ -6,6 +6,7 @@ const { body, validationResult } = require("express-validator");
 router.get("/", (req, res, next) => {
    res.render("dashboard", {
       tabTitle: "Home",
+      page: "dashboard",
       tasks: [],
    });
 });

@@ -5,6 +5,7 @@ const router = express.Router();
 router.get("/", (req, res, next) => {
    res.render("index", {
       tabTitle: "TODO App - Keep track of your task easily.",
+      page: "home",
    });
 });
 

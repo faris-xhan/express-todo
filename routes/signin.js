@@ -6,6 +6,7 @@ const { body, validationResult } = require("express-validator");
 router.get("/", (req, res, next) => {
    res.render("signin", {
       tabTitle: "TODO App - Sign in.",
+      page: "signin",
    });
 });
 

@@ -4,7 +4,7 @@ const { body, validationResult } = require("express-validator");
 
 /* GET users listing. */
 router.get("/", (req, res, next) => {
-   res.render("signup", { tabTitle: "TODO - Registeration" });
+   res.render("signup", { tabTitle: "TODO - Registeration", page: "signup" });
 });
 
 router.post(

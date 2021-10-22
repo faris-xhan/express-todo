@@ -9,5 +9,6 @@ const getUser = async (email, password) => {
    return user;
 };
 
-getUser("test@gmail.com", "12345678");
-getUser("test123@gmail.com", "12345678");
+module.exports = {
+   getUser,
+};

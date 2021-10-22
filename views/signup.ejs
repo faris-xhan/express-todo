@@ -16,6 +16,12 @@
                >
                   Please provide correct information.
                </div>
+               <div
+                  class="alert alert-success"
+                  role="alert"
+                  id="success-alert"
+                  hidden
+               ></div>
                <div class="form-row">
                   <div class="col-md-6 mb-2">
                      <label for="first-name">First name</label>
@@ -125,6 +131,9 @@
       const signUpButton = signup.querySelector('button[type="submit"]');
 
       const handleSignIn = async (formData) => {
+         document.getElementById("success-alert").hidden = true;
+         document.getElementById("incorrect-alert").hidden = true;
+
          const r = await fetch("/signup", {
             method: "POST",
             headers: {
@@ -134,11 +143,16 @@
             body: JSON.stringify(formData),
          });
 
+         const data = await r.json();
+
          if (r.ok) {
-            const data = await r.json();
+            const incorrectAlert = document.getElementById("success-alert");
+            incorrectAlert.innerHTML = data.message;
+            incorrectAlert.hidden = false;
             console.log(data);
          } else {
             const incorrectAlert = document.getElementById("incorrect-alert");
+            incorrectAlert.innerHTML = data.message;
             incorrectAlert.hidden = false;
          }
       };

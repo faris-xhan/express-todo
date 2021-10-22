@@ -1,4 +1,5 @@
 const express = require("express");
+const signService = require("../services/signinService");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
@@ -17,16 +18,21 @@ router.post(
       .notEmpty()
       .isLength({ min: 8 })
       .withMessage("Password should be atleast 8 characters long"),
-   (req, res, next) => {
+   async (req, res, next) => {
+      const { email, password } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
          return res.status(400).json({ errors: errors.array() });
       }
 
-      res.json({
-         email: req.body.email,
-         password: req.body.password,
-      });
+      const user = await signService.getUser(email, password);
+
+      if (user) {
+         return res.json(user);
+      }
+      return res
+         .status(400)
+         .json({ error: "The email or password is incorrect." });
    }
 );
 

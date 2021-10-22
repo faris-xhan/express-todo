@@ -104,6 +104,8 @@
          });
          if (r.ok) {
             const data = await r.json();
+            const incorrectAlert = document.getElementById("incorrect-alert");
+            incorrectAlert.hidden = true;
             console.log(data);
          } else {
             const incorrectAlert = document.getElementById("incorrect-alert");

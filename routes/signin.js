@@ -1,5 +1,5 @@
 const express = require("express");
-const signService = require("../services/signinService");
+const userService = require("../services/userSerivce");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
@@ -25,7 +25,7 @@ router.post(
          return res.status(400).json({ errors: errors.array() });
       }
 
-      const user = await signService.getUser(email, password);
+      const user = await userService.getUser(email, password);
 
       if (user) {
          return res.json(user);
